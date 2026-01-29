@@ -3,36 +3,107 @@ media:
   output: /media
 
 content:
-  - name: blog
-    label: Blog Posts
-    path: content/blog
+  # 1. Authors collection
+  - name: authors
+    label: Authors
     type: collection
-    filename: '{year}-{month}-{day}-{fields.slug}.md'
+    path: content/authors
     fields:
-      - name: cover
-        label: Cover Image
-        type: image
-      - name: title
-        label: Title
+      - name: name
+        label: Name
         type: string
-      - name: slug
-        label: Slug
-        type: string
-      - name: date
-        label: Date
-        type: date
-      - name: body
-        label: Body
+      - name: bio
+        label: Bio
         type: rich-text
+      - name: avatar
+        label: Avatar
+        type: image
 
-  - name: site-settings
-    label: Site Settings
-    path: content/site.json
-    type: file
+  # 2. Blog Types (Categories)
+  - name: blogTypes
+    label: Blog Types
+    type: collection
+    path: content/blog-types
     fields:
       - name: title
-        label: Site Title
+        label: Type Title
         type: string
       - name: description
         label: Description
         type: text
+
+  # 3. Tags collection (optional)
+  - name: tags
+    label: Tags
+    type: collection
+    path: content/tags
+    fields:
+      - name: name
+        label: Tag Name
+        type: string
+
+  # 4. Main blog posts collection (complex)
+  - name: posts
+    label: Blog Posts
+    type: collection
+    path: content/posts
+    filename: '{year}-{month}-{day}-{fields.slug}.md'
+    fields:
+      - name: title
+        label: Title
+        type: string
+
+      - name: slug
+        label: Slug
+        type: string
+
+      - name: publishedDate
+        label: Published Date
+        type: date
+
+      - name: excerpt
+        label: Excerpt
+        type: text
+
+      - name: body
+        label: Content
+        type: rich-text
+
+      # Reference to a single author
+      - name: author
+        label: Author
+        type: reference
+        options:
+          collection: authors
+          search: "name"
+          value: "{path}"
+          label: "{name}"
+
+      # Reference to a blog type (category)
+      - name: category
+        label: Category
+        type: reference
+        options:
+          collection: blogTypes
+          search: "title"
+          value: "{path}"
+          label: "{title}"
+
+      # Multiple tags reference
+      - name: tags
+        label: Tags
+        type: reference
+        options:
+          collection: tags
+          multiple: true
+          search: "name"
+          value: "{path}"
+          label: "{name}"
+
+      - name: featuredImage
+        label: Featured Image
+        type: image
+
+      - name: isFeatured
+        label: Featured Post
+        type: boolean
