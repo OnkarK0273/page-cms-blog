@@ -1,0 +1,35 @@
+media:
+  input: public/media
+  output: /media
+
+content:
+  - name: blog
+    label: Blog Posts
+    path: content/blog
+    type: collection
+    filename: '{year}-{month}-{day}-{fields.slug}.md'
+    fields:
+      - name: title
+        label: Title
+        type: string
+      - name: slug
+        label: Slug
+        type: string
+      - name: date
+        label: Date
+        type: date
+      - name: body
+        label: Body
+        type: rich-text
+
+  - name: site-settings
+    label: Site Settings
+    path: content/site.json
+    type: file
+    fields:
+      - name: title
+        label: Site Title
+        type: string
+      - name: description
+        label: Description
+        type: text
