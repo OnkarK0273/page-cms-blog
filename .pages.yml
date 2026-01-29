@@ -9,6 +9,9 @@ content:
     type: collection
     filename: '{year}-{month}-{day}-{fields.slug}.md'
     fields:
+      - name: cover
+        label: Cover Image
+        type: image
       - name: title
         label: Title
         type: string
