@@ -46,7 +46,7 @@ Speaking of data and React…
 
 # code example
 
-```
+```tsx
 import { getProductDetails } from "@/lib/api";
 import { SITE_URL, staticRoutes } from "@/lib/seo";
 import type { MetadataRoute } from "next";
