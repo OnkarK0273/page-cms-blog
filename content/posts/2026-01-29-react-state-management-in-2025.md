@@ -30,22 +30,47 @@ You might also feel like your existing library is bad for performance, and you n
 
 Essentially, it’s just data. Data that influences how your system works or behaves. When you’re eating ice cream, for example, the state of your mind as a system can be defined as:
 
-1.  In anticipation of eating ice cream.
-    
-2.  Enjoying eating ice cream.
-    
-3.  Satisfied after finishing ice cream.
-    
+1. In anticipation of eating ice cream.
+2. Enjoying eating ice cream.
+3. Satisfied after finishing ice cream.
 
 Or, if we focus on React, it can be:
 
-*   The state of a modal dialog’s openness (open/closed).
-    
-*   The state of data fetching from an endpoint (no data/loading data/error happened/successfully loaded data).
-    
-*   The state of a component’s lifecycle (mounted or not mounted).
-    
+- The state of a modal dialog’s openness (open/closed).
+- The state of data fetching from an endpoint (no data/loading data/error happened/successfully loaded data).
+- The state of a component’s lifecycle (mounted or not mounted).
 
 Or any other data that can influence how something is rendered on the screen or behaves in response to user interaction with the UI.
 
 Speaking of data and React…
+
+# code example
+
+```
+import { getProductDetails } from "@/lib/api";
+import { SITE_URL, staticRoutes } from "@/lib/seo";
+import type { MetadataRoute } from "next";
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  const lastModified = new Date();
+  const staticUrls = staticRoutes
+    .filter((route) => route.path !== "/blog")
+    .map((route) => ({
+      url: `${SITE_URL}${route.path}`,
+      lastModified,
+      changeFrequency:
+        route.path === "/" ? ("weekly" as const) : ("monthly" as const),
+      priority: route.priority,
+    }));
+
+  const productUrls = getProductDetails().map((product) => ({
+    url: `${SITE_URL}/products/${product.slug}`,
+    lastModified,
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
+  }));
+
+  return [...staticUrls, ...productUrls] satisfies MetadataRoute.Sitemap;
+}
+```
+
